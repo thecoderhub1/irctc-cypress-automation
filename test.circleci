@@ -1,0 +1,20 @@
+version: 2.1
+jobs:
+  test:
+    docker:
+      - image: cypress/base:18
+    steps:
+      - checkout
+      - run: npm install
+      - run: npx cypress run
+workflows:
+  daily:
+    triggers:
+      - schedule:
+          cron: "0 0 * * *"
+          filters:
+            branches:
+              only:
+                - main
+    jobs:
+      - test
